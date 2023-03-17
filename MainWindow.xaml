@@ -10,14 +10,16 @@
 	<Window.Resources>
 		<viewmodel:ViewModel x:Key="vm"></viewmodel:ViewModel>
 	</Window.Resources>
-	<Grid>
+	<Grid  DataContext="{Binding Source={StaticResource vm}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<StackPanel Orientation="Horizontal">
 			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="200"
-								SelectedItem="{Binding InterfaceName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectionChanged="comboBoxInterfaces_SelectionChanged">
+								ItemsSource="{Binding Path=InterfaceList}"  
+								SelectedItem="{Binding Path=Interface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+								SelectionChanged="comboBoxInterfaces_SelectionChanged">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding InterfaceName}"/>
@@ -25,8 +27,10 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
+			<Button Command="{Binding Path=IStartSniffing}">Start</Button>
 		</StackPanel>
-		<Button Content="Button" HorizontalAlignment="Left" Margin="165,180,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
+		<Button Content="Button" HorizontalAlignment="Left" Margin="165,180,0,0" Grid.Row="1" VerticalAlignment="Top"
+						Command=""/>
 
 	</Grid>
 </Window>
