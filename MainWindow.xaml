@@ -5,18 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySniffer1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800"
+				
+				>
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
-		<ComboBox Grid.Row="0" ItemsSource="{Binding InterfaceList}">
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding InterfaceName}"/>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
+		<StackPanel Orientation="Horizontal">
+			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="200">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding InterfaceName}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</StackPanel>
+		
 	</Grid>
 </Window>

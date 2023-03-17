@@ -16,27 +16,34 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Collections.ObjectModel;
-
+using System.Threading;
 namespace MySniffer1 {
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
-
+	
 	public partial class MainWindow : Window {
-		public ObservableCollection<IPNetworkInterface> InterfaceList { get; private set; }
-		public  class IPNetworkInterface{
+		public ObservableCollection<IPNetworkInterface> InterfaceList = new ObservableCollection<IPNetworkInterface>();
+		public class IPNetworkInterface {
 			public string InterfaceName { get; set; }
 		}
 		public string[] GetNetworkInterfaceName() {
 			NetworkInterface[] ni = NetworkInterface.GetAllNetworkInterfaces();
 			string[] strl = new string[ni.Length];
 			for (int i = 0; i < ni.Length; ++i) {
+				string ipstr = ni[i].Name;
+				//Console.WriteLine(ipstr);
+				IPNetworkInterface ipf = new IPNetworkInterface { InterfaceName = ipstr };
+				Console.WriteLine(i);
+				InterfaceList.Add(ipf);
 				strl[i] = ni[i].Name;
 			}
+
 			return strl;
 		}
 		public MainWindow() {
 			InitializeComponent();
+			comboBoxInterfaces.ItemsSource = InterfaceList;
 			IPAddress iPAddress = IPAddress.Parse("127.0.0.1");
 			Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 			socket.Bind(new IPEndPoint(iPAddress, 0));
@@ -51,10 +58,7 @@ namespace MySniffer1 {
 					}
 				}*/
 			string[] str = GetNetworkInterfaceName();
-			foreach (string s in str) {
-				Console.WriteLine(s);
-
-			}
+			
 
 		}
 
