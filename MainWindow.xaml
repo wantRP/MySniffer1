@@ -4,24 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySniffer1"
+				xmlns:viewmodel="clr-namespace:MySniffer1.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-				
-				>
+        Title="MainWindow" Height="450" Width="800">
+	<Window.Resources>
+		<viewmodel:ViewModel x:Key="vm"></viewmodel:ViewModel>
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<StackPanel Orientation="Horizontal">
-			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="200">
+			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="200"
+								SelectedItem="{Binding InterfaceName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectionChanged="comboBoxInterfaces_SelectionChanged">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding InterfaceName}"/>
+
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
 		</StackPanel>
-		
+		<Button Content="Button" HorizontalAlignment="Left" Margin="165,180,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
+
 	</Grid>
 </Window>

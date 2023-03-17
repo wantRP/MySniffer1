@@ -27,6 +27,20 @@ namespace MySniffer1 {
 		public class IPNetworkInterface {
 			public string InterfaceName { get; set; }
 		}
+		private IPNetworkInterface selectedInterface;
+		/// <summary>
+		/// Currently selected IP address of an interface on which packets are being captured
+		/// </summary>
+		public IPNetworkInterface SelectedInterface {
+			get {
+				return selectedInterface;
+			}
+			set {
+				selectedInterface = value;
+				
+			}
+		}
+
 		public string[] GetNetworkInterfaceName() {
 			NetworkInterface[] ni = NetworkInterface.GetAllNetworkInterfaces();
 			string[] strl = new string[ni.Length];
@@ -43,6 +57,7 @@ namespace MySniffer1 {
 		}
 		public MainWindow() {
 			InitializeComponent();
+			
 			comboBoxInterfaces.ItemsSource = InterfaceList;
 			IPAddress iPAddress = IPAddress.Parse("127.0.0.1");
 			Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
@@ -62,5 +77,12 @@ namespace MySniffer1 {
 
 		}
 
+		private void comboBoxInterfaces_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			Console.WriteLine(SelectedInterface);
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e) {
+			SelectedInterface.ToString();
+		}
 	}
 }
