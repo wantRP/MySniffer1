@@ -29,8 +29,8 @@
 			</ComboBox>
 			<Button Command="{Binding Path=IStartSniffing}">Start</Button>
 		</StackPanel>
-		<Button Content="Button" HorizontalAlignment="Left" Margin="165,180,0,0" Grid.Row="1" VerticalAlignment="Top"
-						Command=""/>
+		<Button Content="Button" Margin="0,0,201,36" Grid.Row="1"
+						Command="" Click="Button_Click_1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="40"/>
 
 	</Grid>
 </Window>

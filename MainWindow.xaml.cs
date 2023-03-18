@@ -26,22 +26,12 @@ namespace MySniffer1 {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
-
+			/*
 			IPAddress iPAddress = IPAddress.Parse("127.0.0.1");
 			Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 			socket.Bind(new IPEndPoint(iPAddress, 0));
 			socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
-			/*foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces()) {
-				if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet) {
-					Console.WriteLine(ni.Name);
-					foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses) {
-						if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
-							Console.WriteLine(ip.Address.ToString());
-						}
-					}
-				}*/
-			//string[] str = GetNetworkInterfaceName();
-			
+			*/
 
 		}
 
@@ -52,6 +42,10 @@ namespace MySniffer1 {
 		private void Button_Click(object sender, RoutedEventArgs e) {
 			//SelectedInterface.ToString();
 			
+		}
+
+		private void Button_Click_1(object sender, RoutedEventArgs e) {
+			IPAddress.Parse("[2344::1]");
 		}
 	}
 }
