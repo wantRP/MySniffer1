@@ -16,9 +16,9 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<StackPanel Orientation="Horizontal">
-			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="200"
+			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="220"
 								ItemsSource="{Binding Path=InterfaceList}"  
-								SelectedItem="{Binding Path=Interface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+								SelectedItem="{Binding Path=selectedInterface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
 								SelectionChanged="comboBoxInterfaces_SelectionChanged">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
