@@ -19,7 +19,7 @@
 			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="220"
 								ItemsSource="{Binding Path=InterfaceList}"  
 								SelectedItem="{Binding Path=selectedInterface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-								SelectionChanged="comboBoxInterfaces_SelectionChanged">
+								>
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding InterfaceName}"/>
@@ -29,6 +29,76 @@
 			</ComboBox>
 			<Button Command="{Binding Path=IStartSniffing}">Start</Button>
 		</StackPanel>
+		<ListView Name="列表" Grid.Row="1" Grid.ColumnSpan="3" Height="Auto"
+                  ItemsSource="{Binding Path=Packets}"
+                  SelectedItem="{Binding SelectedPacket, Mode=TwoWay}">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="No." Width="60">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=Number}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Source IP" Width="130">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=IPHeader[0].SourceIPAddress}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Source Port" Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<DockPanel>
+									<TextBlock Text="{Binding Path=UDPPacket[0].UDPHeader[0].SourcePort}"></TextBlock>
+									<TextBlock Text="{Binding Path=TCPPacket[0].TCPHeader[0].SourcePort}"></TextBlock>
+								</DockPanel>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Destination IP" Width="130">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=IPHeader[0].DestinationIPAddress}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Destination Port" Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<DockPanel>
+									<TextBlock Text="{Binding Path=UDPPacket[0].UDPHeader[0].DestinationPort}"></TextBlock>
+									<TextBlock Text="{Binding Path=TCPPacket[0].TCPHeader[0].DestinationPort}"></TextBlock>
+								</DockPanel>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Time" Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=ReceiveTime}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Type" Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=IPHeader[0].TransportProtocolName}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Length" Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=IPHeader[0].TotalLength}"></TextBlock>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+				</GridView>
+			</ListView.View>
+		</ListView>
 		<Button Content="Button" Margin="0,0,201,36" Grid.Row="1"
 						Command="" Click="Button_Click_1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="40"/>
 

@@ -35,15 +35,6 @@ namespace MySniffer1 {
 
 		}
 
-		private void comboBoxInterfaces_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			//Console.WriteLine(SelectedInterface);
-		}
-
-		private void Button_Click(object sender, RoutedEventArgs e) {
-			//SelectedInterface.ToString();
-			
-		}
-
 		private void Button_Click_1(object sender, RoutedEventArgs e) {
 			IPAddress.Parse("[2344::1]");
 		}

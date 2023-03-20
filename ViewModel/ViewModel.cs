@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using SharpPcap;
-
+using MySniffer1.Model;
 namespace MySniffer1.ViewModel {
 	public class ViewModel {
 		public ObservableCollection<IPNetworkInterface> InterfaceList { get; set; }
@@ -20,6 +20,9 @@ namespace MySniffer1.ViewModel {
 			public ILiveDevice Interface { get; set; }
 		}
 		public IPNetworkInterface selectedInterface { get; set; }
+		private PacketArrivalEventHandler arrivalEventHandler;
+		private ObservableCollection<RawCapture> PacketQueue = new ObservableCollection<RawCapture>();
+		public ObservableCollection<Packet> Packets { get; set; }
 		private void fetchNetworkInterfaceName() {
 			/*
 			NetworkInterface[] ni = NetworkInterface.GetAllNetworkInterfaces();
@@ -34,7 +37,7 @@ namespace MySniffer1.ViewModel {
 			}*/
 			var thel = CaptureDeviceList.Instance;
 			foreach (var iface in thel) {
-				IPNetworkInterface ipf = new IPNetworkInterface { InterfaceName = iface.Description, Interface =iface };
+				IPNetworkInterface ipf = new IPNetworkInterface { InterfaceName = iface.Description, Interface = iface };
 				InterfaceList.Add(ipf);
 			}
 		}
@@ -45,7 +48,7 @@ namespace MySniffer1.ViewModel {
 				ipAddresses.Add(ip.Address);
 			}
 		}*/
-
+		private int packetCount = 0;
 		public abstract class Listener {
 			protected IPAddress IP;
 			protected byte[] byteBufferData;
@@ -132,31 +135,38 @@ namespace MySniffer1.ViewModel {
 			else return new Listener6(ip);
 		}
 		public ICommand IStartSniffing { get; private set; }
+
 		public void StartSniffing() {
-			//TODO: multi threads
-			/*
-			if (Interface == null) return;
-			fetchIPofInterface(Interface);
-			foreach (var ip in ipAddresses) {
-				if (ip.AddressFamily == AddressFamily.InterNetworkV6 && ip.Equals(IPAddress.Parse("2400:dd01:103a:4053::10e5"))) {
-					//continue;
-					Console.WriteLine("6666");
-					Listener listener = GetListener(ip);
-					listener.StartListening();
-					break;
-				} else {
-					Console.WriteLine(ip.ToString());
-					Listener listener = GetListener(ip);
-					listener.StartListening();
-					//&&ip.Equals(IPAddress.Parse("2400:dd01:103a:4053::10e5"))
-					break;
-				}
-			}	*/
-			
+			ICaptureDevice device = selectedInterface.Interface;
+			Queue<Packet> packetStrings = new Queue<Packet>();
+			// start the background thread
+
+			// setup background capture
+			arrivalEventHandler = new PacketArrivalEventHandler(device_OnPacketArrival);
+			device.OnPacketArrival += arrivalEventHandler;
+			//captureStoppedEventHandler = new CaptureStoppedEventHandler(device_OnCaptureStopped);
+			//device.OnCaptureStopped += captureStoppedEventHandler;
+			device.Open();
+			device.StartCapture();
 		}
+		void device_OnPacketArrival(object sender, PacketCapture e) {
+			// print out periodic statistics about this device
+			++packetCount;
+			var Now = DateTime.Now; // cache 'DateTime.Now' for minor reduction in cpu overhead
+															// lock QueueLock to prevent multiple threads accessing PacketQueue at
+															// the same time
+			RawCapture pac = e.GetPacket();
+			//PacketQueue.Add(pac);
+			System.Windows.Application.Current.Dispatcher.Invoke((Action)(() => {
+				Packets.Add(new Packet(pac, packetCount));
+			}));
+			Console.WriteLine(Convert.ToBase64String(pac.Data) + "\n");
+		}
+
 		public ViewModel() {
 			IStartSniffing = new RelayCommand(() => StartSniffing());
 			InterfaceList = new ObservableCollection<IPNetworkInterface>();
+			Packets = new ObservableCollection<Packet>();
 			fetchNetworkInterfaceName();
 		}
 	}
