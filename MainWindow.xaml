@@ -18,7 +18,7 @@
 		<StackPanel Orientation="Horizontal">
 			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="220"
 								ItemsSource="{Binding Path=InterfaceList}"  
-								SelectedItem="{Binding Path=selectedInterface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+								SelectedItem="{Binding Path=SelectedInterface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
 								>
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
@@ -44,7 +44,7 @@
 					<GridViewColumn Header="Source IP" Width="130">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Path=IPHeader[0].SourceIPAddress}"></TextBlock>
+								<TextBlock Text="{Binding Path=aaa}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
@@ -52,8 +52,8 @@
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
 								<DockPanel>
-									<TextBlock Text="{Binding Path=UDPPacket[0].UDPHeader[0].SourcePort}"></TextBlock>
-									<TextBlock Text="{Binding Path=TCPPacket[0].TCPHeader[0].SourcePort}"></TextBlock>
+									<TextBlock Text="{Binding Path=aaa}"></TextBlock>
+									<TextBlock Text="{Binding Path=aaa}"></TextBlock>
 								</DockPanel>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
@@ -61,7 +61,7 @@
 					<GridViewColumn Header="Destination IP" Width="130">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Path=IPHeader[0].DestinationIPAddress}"></TextBlock>
+								<TextBlock Text="{Binding Path=aaa}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
@@ -69,8 +69,8 @@
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
 								<DockPanel>
-									<TextBlock Text="{Binding Path=UDPPacket[0].UDPHeader[0].DestinationPort}"></TextBlock>
-									<TextBlock Text="{Binding Path=TCPPacket[0].TCPHeader[0].DestinationPort}"></TextBlock>
+									<TextBlock Text="{Binding Path=aaa}"></TextBlock>
+									<TextBlock Text="{Binding Path=aaa}"></TextBlock>
 								</DockPanel>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
@@ -78,7 +78,7 @@
 					<GridViewColumn Header="Time" Width="100">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Path=ReceiveTime}"></TextBlock>
+								<TextBlock Text="{Binding Path=Time}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
