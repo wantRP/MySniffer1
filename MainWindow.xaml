@@ -13,9 +13,11 @@
 	<Grid  DataContext="{Binding Source={StaticResource vm}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"/>
-			<RowDefinition/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="4"/>
+			<RowDefinition Height="180"/>
 		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal">
+		<StackPanel Grid.Row="0" Orientation="Horizontal">
 			<ComboBox Name="comboBoxInterfaces" Grid.Row="0" Width="220"
 								ItemsSource="{Binding Path=InterfaceList}"  
 								SelectedItem="{Binding Path=SelectedInterface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -28,10 +30,21 @@
 				</ComboBox.ItemTemplate>
 			</ComboBox>
 			<Button Command="{Binding Path=IStartSniffing}">Start</Button>
+			<Button Command="{Binding Path=IStopSniffing}">Stop</Button>
+			<Button Command="{Binding Path=IClearList}">Clear</Button>
 		</StackPanel>
 		<ListView Name="列表" Grid.Row="1" Grid.ColumnSpan="3" Height="Auto"
-                  ItemsSource="{Binding Path=Packets}"
-                  SelectedItem="{Binding SelectedPacket, Mode=TwoWay}">
+                  ItemsSource="{Binding Packets}"
+                  SelectedItem="{Binding SelectedPacket}" FontFamily="Sarasa Mono SC">
+			<ListView.Resources>
+
+				<Style TargetType="{x:Type GridViewColumnHeader}">
+					<Setter Property="HorizontalContentAlignment" Value="Left" />
+					<Setter Property="FontFamily" Value="Times new roman"/>
+				</Style>
+
+			</ListView.Resources>
+
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="No." Width="60">
@@ -44,8 +57,8 @@
 					<GridViewColumn Header="Source IP" Width="130">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<!--
-								<TextBlock Text="{Binding Path=aaa}"></TextBlock>-->
+
+								<TextBlock Text="{Binding Path=Source}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
@@ -53,7 +66,7 @@
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
 								<DockPanel>
-									
+									<TextBlock Text="{Binding Path=SourcePort}"></TextBlock>
 								</DockPanel>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
@@ -61,7 +74,7 @@
 					<GridViewColumn Header="Destination IP" Width="130">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								
+								<TextBlock Text="{Binding Path=Destination}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
@@ -69,7 +82,7 @@
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
 								<DockPanel>
-									
+									<TextBlock Text="{Binding Path=DestinationPort}"></TextBlock>
 								</DockPanel>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
@@ -84,14 +97,14 @@
 					<GridViewColumn Header="Type" Width="100">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Path=IPHeader[0].TransportProtocolName}"></TextBlock>
+								<TextBlock Text="{Binding Path=Type}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
-					<GridViewColumn Header="Length" Width="100">
+					<GridViewColumn Header="Length (byte)" Width="100">
 						<GridViewColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Path=IPHeader[0].TotalLength}"></TextBlock>
+								<TextBlock Text="{Binding Path=Length}"></TextBlock>
 							</DataTemplate>
 						</GridViewColumn.CellTemplate>
 					</GridViewColumn>
@@ -99,7 +112,18 @@
 			</ListView.View>
 		</ListView>
 		<Button Content="Button" Margin="0,0,201,36" Grid.Row="1"
-						Command="" Click="Button_Click_1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="40"/>
-
+		         Click="Button_Click_1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="40"/>
+		<GridSplitter Grid.Row="2" Height="4" ResizeDirection="Rows" Width="Auto" HorizontalAlignment="Stretch"/>
+		<Grid Grid.Row="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1.2*"/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<TextBox Grid.Column="0" Name="TextBoxDetails" MinWidth="60" Text="{Binding SelectedPacket.Details}" TextWrapping="WrapWithOverflow"  IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Sarasa Mono SC"></TextBox>
+			<TextBox Grid.Column="1" Name="TextBoxHex" TextWrapping="Wrap"  ScrollViewer.VerticalScrollBarVisibility="Auto"  IsReadOnly="True" FontFamily="Sarasa Mono SC">
+				Sieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergver</TextBox>
+			<TextBox Grid.Column="2" Name="TextPlainText" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" FontFamily="Sarasa Mono SC">Sieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergver</TextBox>
+		</Grid>
 	</Grid>
 </Window>

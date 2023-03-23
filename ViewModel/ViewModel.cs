@@ -23,7 +23,7 @@ namespace MySniffer1.ViewModel {
 		public RawPacket SelectedPacket { get; set; }
 		private PacketArrivalEventHandler arrivalEventHandler;
 		private ObservableCollection<RawCapture> PacketQueue = new ObservableCollection<RawCapture>();
-		public ObservableCollection<RawPacket> Packets { get; set; }
+		public ObservableCollection<RawPacket> Packets { get; set; }//binded
 		private void fetchNetworkInterfaceName() {
 			/*
 			NetworkInterface[] ni = NetworkInterface.GetAllNetworkInterfaces();
@@ -130,9 +130,12 @@ namespace MySniffer1.ViewModel {
 			else return new Listener6(ip);
 		}
 		public ICommand IStartSniffing { get; private set; }
-
-		public void StartSniffing() {
-			ICaptureDevice device = SelectedInterface.Interface;
+		public ICommand IStopSniffing { get; private set; }
+		public ICommand IClearList { get; private set; }
+		private ICaptureDevice device;
+		private void StartSniffing() {
+			if (SelectedInterface == null) return;
+			 device = SelectedInterface.Interface;
 			Queue<RawPacket> packetStrings = new Queue<RawPacket>();
 			arrivalEventHandler = new PacketArrivalEventHandler(device_OnPacketArrival);
 			device.OnPacketArrival += arrivalEventHandler;
@@ -155,9 +158,20 @@ namespace MySniffer1.ViewModel {
 
 		public ViewModel() {
 			IStartSniffing = new RelayCommand(() => StartSniffing());
+			IStopSniffing = new RelayCommand(() => StopSniffing());
+			IClearList = new RelayCommand(() => ClearList());
 			InterfaceList = new ObservableCollection<IPNetworkInterface>();
 			Packets = new ObservableCollection<RawPacket>();
 			fetchNetworkInterfaceName();
+		}
+
+		private void ClearList() {
+			this.Packets.Clear();
+		}
+
+		private void StopSniffing() {
+			device.StopCapture();
+			device.Close();
 		}
 	}
 }

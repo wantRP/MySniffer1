@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PacketDotNet;
+using System.Windows;
 
 namespace MySniffer1.Model {
 	public class RawPacket {
@@ -15,7 +16,10 @@ namespace MySniffer1.Model {
 		public int Length { get { return p.Data.Length; } }
 		public string Source { get; set; }
 		public string Destination { get; set; }
-		public string strr { get; set; }
+		public int SourcePort { get; set; }
+		public int DestinationPort { get; set; }
+		public string Details { get; set; }
+		public string Type { get; set; }
 		public byte[] Data { get; set; }
 		public string Base64 { get { return Convert.ToBase64String(Data); } }
 		private TimeSpan time;
@@ -24,9 +28,51 @@ namespace MySniffer1.Model {
 			this.p = p;
 			this.Number = number;
 			this.time = DateTime.Now.TimeOfDay;
-			Packet packet = Packet.ParsePacket(p.LinkLayerType, p.Data);
-			strr=packet.ToString(StringOutputType.Colored);
-			this.Data = p.Data;
+			EthernetPacket packet = new EthernetPacket(new PacketDotNet.Utils.ByteArraySegment(p.Data));
+			Details = packet.ToString(StringOutputType.Normal);
+			this.Type = packet.Type.ToString();
+			EthernetType type = packet.Type;
+			IPPacket ippacket;
+			switch (type) {
+				case EthernetType.IPv4: {
+						ippacket = new IPv4Packet(packet.HeaderDataSegment);
+						break;
+					}
+				case EthernetType.IPv6: {
+						ippacket = new IPv6Packet(packet.HeaderDataSegment);
+						break;
+					}
+				default: {
+						ippacket = new IPv4Packet(packet.HeaderDataSegment);
+						break;
+					}
+			}
+			
+			this.Type = ippacket.Protocol.ToString();
+			this.Source=ippacket.SourceAddress.ToString();
+			this.Destination=ippacket.DestinationAddress.ToString();
+			 TransportPacket transportPacket=new TcpPacket(0,0) ;
+			InternetPacket internetPacket;
+			switch (ippacket.Protocol) {
+				case ProtocolType.Tcp: {
+						transportPacket = new TcpPacket(ippacket.HeaderDataSegment);
+						break;
+					}
+				case ProtocolType.Udp: {
+						transportPacket = new UdpPacket(ippacket.HeaderDataSegment);
+						break;
+					}
+				case ProtocolType.Icmp: {
+						//transportPacket = new TcpPacket(0, 0);
+						internetPacket = new IcmpV4Packet(ippacket.HeaderDataSegment);
+						break;
+					}
+			}
+			this.SourcePort = transportPacket.SourcePort;
+			this.DestinationPort = transportPacket.DestinationPort;
+				//MessageBox.Show(packet.PayloadPacket.GetType().ToString());
+
+				this.Data = p.Data;
 		}
 
 	}
