@@ -111,8 +111,6 @@
 				</GridView>
 			</ListView.View>
 		</ListView>
-		<Button Content="Button" Margin="0,0,201,36" Grid.Row="1"
-		         Click="Button_Click_1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="40"/>
 		<GridSplitter Grid.Row="2" Height="4" ResizeDirection="Rows" Width="Auto" HorizontalAlignment="Stretch"/>
 		<Grid Grid.Row="3">
 			<Grid.ColumnDefinitions>
@@ -121,9 +119,8 @@
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<TextBox Grid.Column="0" Name="TextBoxDetails" MinWidth="60" Text="{Binding SelectedPacket.Details}" TextWrapping="WrapWithOverflow"  IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Sarasa Mono SC"></TextBox>
-			<TextBox Grid.Column="1" Name="TextBoxHex" TextWrapping="Wrap"  ScrollViewer.VerticalScrollBarVisibility="Auto"  IsReadOnly="True" FontFamily="Sarasa Mono SC">
-				Sieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergver</TextBox>
-			<TextBox Grid.Column="2" Name="TextPlainText" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" FontFamily="Sarasa Mono SC">Sieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergverieuwf wefe ergver</TextBox>
+			<TextBox Grid.Column="1" Name="TextBoxHex" Text="{Binding SelectedPacket.HexString}" TextWrapping="Wrap"  ScrollViewer.VerticalScrollBarVisibility="Auto"  IsReadOnly="True" FontFamily="Sarasa Mono SC"/>
+			<TextBox Grid.Column="2" Name="TextPlainText" Text="{Binding SelectedPacket.PlainString}" TextAlignment="Justify" TextWrapping="WrapWithOverflow" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" FontFamily="Sarasa Mono SC"/>
 		</Grid>
 	</Grid>
 </Window>

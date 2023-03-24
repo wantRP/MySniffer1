@@ -35,9 +35,7 @@ namespace MySniffer1 {
 
 		}
 
-		private void Button_Click_1(object sender, RoutedEventArgs e) {
-			IPAddress.Parse("[2344::1]");
-		}
+	
 
 		
 	}

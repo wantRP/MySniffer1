@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using PacketDotNet;
 using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace MySniffer1.Model {
 	public class RawPacket {
@@ -20,18 +20,24 @@ namespace MySniffer1.Model {
 		public int DestinationPort { get; set; }
 		public string Details { get; set; }
 		public string Type { get; set; }
+		public string HexString { get; set; }
+		public string PlainString { get; set; }
 		public byte[] Data { get; set; }
 		public string Base64 { get { return Convert.ToBase64String(Data); } }
 		private TimeSpan time;
 		public string Time { get { return time.ToString("hh':'mm':'ss'.'ff"); } }
 		public RawPacket(RawCapture p, int number) {
 			this.p = p;
+			this.Data = p.Data;
 			this.Number = number;
 			this.time = DateTime.Now.TimeOfDay;
 			EthernetPacket packet = new EthernetPacket(new PacketDotNet.Utils.ByteArraySegment(p.Data));
 			Details = packet.ToString(StringOutputType.Normal);
 			this.Type = packet.Type.ToString();
 			EthernetType type = packet.Type;
+			HexString = Regex.Replace(Model.Utils.BytetoHex(this.Data), ".{2}", "$0 ");
+			PlainString = Model.Utils.BytetoVisibleString(this.Data);
+			Console.WriteLine(Convert.ToString(this.Data));
 			IPPacket ippacket;
 			switch (type) {
 				case EthernetType.IPv4: {
@@ -47,11 +53,11 @@ namespace MySniffer1.Model {
 						break;
 					}
 			}
-			
+
 			this.Type = ippacket.Protocol.ToString();
-			this.Source=ippacket.SourceAddress.ToString();
-			this.Destination=ippacket.DestinationAddress.ToString();
-			 TransportPacket transportPacket=new TcpPacket(0,0) ;
+			this.Source = ippacket.SourceAddress.ToString();
+			Destination = ippacket.DestinationAddress.ToString();
+			TransportPacket transportPacket = new TcpPacket(0, 0);
 			InternetPacket internetPacket;
 			switch (ippacket.Protocol) {
 				case ProtocolType.Tcp: {
@@ -70,9 +76,9 @@ namespace MySniffer1.Model {
 			}
 			this.SourcePort = transportPacket.SourcePort;
 			this.DestinationPort = transportPacket.DestinationPort;
-				//MessageBox.Show(packet.PayloadPacket.GetType().ToString());
+			//MessageBox.Show(packet.PayloadPacket.GetType().ToString());
 
-				this.Data = p.Data;
+
 		}
 
 	}
