@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PacketDotNet;
 using System.Windows;
 using System.Text.RegularExpressions;
-
+using MySniffer1.Model;
 namespace MySniffer1.Model {
 	public class RawPacket {
 		public RawCapture p;
@@ -37,11 +37,11 @@ namespace MySniffer1.Model {
 			EthernetType type = packet.Type;
 			HexString = Regex.Replace(Model.Utils.BytetoHex(this.Data), ".{2}", "$0 ");
 			PlainString = Model.Utils.BytetoVisibleString(this.Data);
-			Console.WriteLine(Convert.ToString(this.Data));
 			IPPacket ippacket;
 			switch (type) {
 				case EthernetType.IPv4: {
 						ippacket = new IPv4Packet(packet.HeaderDataSegment);
+
 						break;
 					}
 				case EthernetType.IPv6: {
@@ -73,6 +73,16 @@ namespace MySniffer1.Model {
 						internetPacket = new IcmpV4Packet(ippacket.HeaderDataSegment);
 						break;
 					}
+					default : {
+						transportPacket = new TcpPacket(ippacket.HeaderDataSegment);
+						break;
+					}
+			}
+			ApplicationPacket applicationPacket;
+
+			if (ippacket.Protocol == ProtocolType.Tcp||ippacket.Protocol==ProtocolType.Udp) {
+				string s = Utils.BytetoVisibleString(transportPacket.PayloadData);
+				if (s.StartsWith("GET")||s.StartsWith("POST")||s.Contains("HTTP/")) this.Type = "HTTP";
 			}
 			this.SourcePort = transportPacket.SourcePort;
 			this.DestinationPort = transportPacket.DestinationPort;

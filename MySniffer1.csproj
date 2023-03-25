@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ApplicationPacket.cs" />
     <Compile Include="Model\Packet.cs" />
     <Compile Include="Model\Utils.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
