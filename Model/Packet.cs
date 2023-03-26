@@ -32,7 +32,7 @@ namespace MySniffer1.Model {
 			this.Number = number;
 			this.time = DateTime.Now.TimeOfDay;
 			EthernetPacket packet = new EthernetPacket(new PacketDotNet.Utils.ByteArraySegment(p.Data));
-			Details = packet.ToString(StringOutputType.Normal);
+			Details = packet.ToString(StringOutputType.Verbose);
 			this.Type = packet.Type.ToString();
 			EthernetType type = packet.Type;
 			HexString = Regex.Replace(Model.Utils.BytetoHex(this.Data), ".{2}", "$0 ");
